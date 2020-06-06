@@ -1,10 +1,7 @@
-pub mod color3;
-
-
 pub struct Vector {
-    x: f64,
-    y: f64,
-    z: f64,
+    pub x: f64,
+    pub y: f64,
+    pub z: f64,
 }
 
 impl Vector {
@@ -16,11 +13,27 @@ impl Vector {
         Vector{ x, y, z }
     }
 
+    pub fn copy(&self) -> Vector {
+        Vector{
+            x: self.x,
+            y: self.y,
+            z: self.z
+        }
+    }
+
     pub fn sum(&self, other: &Vector) -> Vector {
         Vector{
             x: self.x + other.x,
             y: self.y + other.y,
             z: self.z + other.z
+        }
+    }
+
+    pub fn sub(&self, other: &Vector) -> Vector {
+        Vector{
+            x: self.x - other.x,
+            y: self.y - other.y,
+            z: self.z - other.z
         }
     }
 
@@ -48,6 +61,11 @@ impl Vector {
         self.len_sq().sqrt()
     }
 
+    pub fn unit_vec(&self) -> Vector {
+        let scale_factor = 1.0 / self.len();
+        self.scale(scale_factor)
+    }
+
 }
 
 #[cfg(test)]
@@ -71,5 +89,22 @@ mod tests {
         assert_eq!(v.x, 8.0);
         assert_eq!(v.y, 4.0);
         assert_eq!(v.z, 2.0);
+    }
+
+    #[test]
+    fn test_sub() {
+        let v1 = Vector::create(4.0, 2.0, 1.0);
+        let v2 = Vector::create(2.0, 0.5, 1.0);
+        let v3 = v1.sub(&v2);
+        assert_eq!(v3.x, 2.0);
+        assert_eq!(v3.y, 1.5);
+        assert_eq!(v3.z, 0.0);
+    }
+
+    #[test]
+    fn test_unit_vector() {
+        let v = Vector::create(4.0, 2.0, 1.0);
+        let v = v.unit_vec();
+        assert_eq!(v.len(), 1.0);
     }
 }
