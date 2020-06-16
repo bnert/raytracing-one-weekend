@@ -66,6 +66,11 @@ impl Vector {
         self.scale(scale_factor)
     }
 
+    pub fn dot(&self, other: &Vector) -> f64 {
+        let prod = self.product(other);
+        prod.x + prod.y + prod.z
+    }
+
 }
 
 #[cfg(test)]

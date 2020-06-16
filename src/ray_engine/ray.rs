@@ -13,8 +13,20 @@ use crate::three::color3::ColorRGB;
  * t = real number param
  */
 pub struct Ray {
-    origin: Vector,
-    direction: Vector
+    pub origin: Vector,
+    pub direction: Vector
+}
+
+
+fn hit_sphere(sphere: &Vector, radius: f64, ray: &Ray) -> bool {
+    let delta_sphere = ray.origin.sub(&sphere);
+    let ray_direction = ray.direction.dot(&ray.direction);
+    let b = 2.0 * delta_sphere.dot(&ray.direction);
+    let c = delta_sphere.dot(&delta_sphere) - (radius * radius);
+    // In the form of b^2 - 4 * a * c
+    // for a given quadtratic
+    let discriminant = b * b - 4.0 * ray_direction * c;
+    discriminant > 0.0
 }
 
 impl Ray {
@@ -34,6 +46,18 @@ impl Ray {
     }
 
     pub fn to_rgb(&self) -> ColorRGB {
+
+        if hit_sphere(&Vector{x: 1.0, y: 1.0, z: -2.0}, 0.5, self) {
+            return ColorRGB::from_f64(0.0, 0.0, 1.0);
+        }
+
+        if hit_sphere(&Vector{x: 0.0, y: 0.0, z: -3.0}, 0.5, self) {
+            return ColorRGB::from_f64(0.0, 1.0, 0.0);
+        }
+
+        if hit_sphere(&Vector{x: 1.0, y: 1.0, z: -5.0}, 0.5, self) {
+            return ColorRGB::from_f64(1.0, 0.0, 0.0);
+        }
         let unit_vec = self.direction.unit_vec();
         let t: f64 = 0.5 * (unit_vec.y + 1.0);
         let rgb_ref = [0.5, 0.7, 1.0];
@@ -44,6 +68,6 @@ impl Ray {
             // will show.
             rgb[i] = (t * 1.0) + ((1.0 - t) * rgb_ref[i]);
         }
-        ColorRGB::from_f64(rgb[0], rgb[1], rgb[2])
+        return ColorRGB::from_f64(rgb[0], rgb[1], rgb[2]);
     }
 }
