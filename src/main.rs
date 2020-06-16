@@ -28,22 +28,14 @@ fn main() {
     let adj_img_w: f64 = cam.img_width as f64 - 1.0;
     for x in 0..cam.img_height {
         for y in 0..cam.img_width {
-            let r: f64 = (y as f64) / adj_img_w;
-            let g: f64 = (adj_img_h - x as f64) / adj_img_h;
-            let b: f64 = 0.90;
-
-            // let u = (y as f64) / adj_img_w;
-            // let v = (x as f64) / adj_img_h;
-            // let direction = cam.lower_left_corner
-            //     .sum(&cam.horizontal.scale(u))
-            //     .sum(&cam.vertical.scale(v))
-            //     .sub(&cam.origin);
-            // let ray = Ray::create(cam.origin.copy(), direction);
-
-            // let color = ColorRGB::from_f64(r, g, b);
-            // let color = ray.to_rgb();
-            let color = ColorRGB::from_f64(r, g, b);
-            match color.write_ppm_row(&mut file_h) {
+            let u = (y as f64) / adj_img_w;
+            let v = (x as f64) / adj_img_h;
+            let direction = cam.lower_left_corner
+                .sum(&cam.horizontal.scale(u))
+                .sum(&cam.vertical.scale(v))
+                .sub(&cam.origin);
+            let ray = Ray::create(cam.origin.copy(), direction);
+            match ray.to_rgb().write_ppm_row(&mut file_h) {
                 Err(_) => println!("Unable to write row\n"),
                 _ => {
                     // noop
