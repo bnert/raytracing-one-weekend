@@ -26,10 +26,10 @@ fn main() {
 
     let adj_img_h: f64 = cam.img_height as f64 - 1.0;
     let adj_img_w: f64 = cam.img_width as f64 - 1.0;
-    for x in 0..cam.img_height {
-        for y in 0..cam.img_width {
-            let u = (y as f64) / adj_img_w;
-            let v = (x as f64) / adj_img_h;
+    for row in 0..cam.img_height {
+        for pixel_in_row in 0..cam.img_width {
+            let u = (pixel_in_row as f64) / adj_img_w;
+            let v = (row as f64) / adj_img_h;
             let direction = cam.lower_left_corner
                 .sum(&cam.horizontal.scale(u))
                 .sum(&cam.vertical.scale(v))
