@@ -1,5 +1,6 @@
 use crate::three::vector3::Vector;
 
+#[derive(Debug)]
 pub struct Camera {
     pub aspect_ratio: f32,
     pub img_width: u32,
@@ -12,7 +13,7 @@ pub struct Camera {
     pub origin: Vector,
     pub horizontal: Vector,
     pub vertical: Vector,
-    pub lower_left_corner: Vector
+    pub lower_left_corner: Vector,
 }
 
 impl Camera {
@@ -27,9 +28,9 @@ impl Camera {
             focal_length: 0.0,
 
             origin: Vector::new(),
-            horizontal: Vector::new(), 
+            horizontal: Vector::new(),
             vertical: Vector::new(),
-            lower_left_corner: Vector::new()
+            lower_left_corner: Vector::new(),
         }
     }
 
@@ -45,8 +46,9 @@ impl Camera {
         let vert = Vector::create(0.0, vh as f64, 0.0);
         // This computes where the lower left corner of
         // the viewable plane (viewport) is located.
-        // Eq: origin - (vert / 2) - (horz / 2) - (0, 0, focal_len)
-        let llc = orig.sub(&horz.scale(0.5))
+        // Eq: origin - (horz / 2)- (vert / 2) - Vector(0, 0, focal_len)
+        let llc = orig
+            .sub(&horz.scale(0.5))
             .sub(&vert.scale(0.5))
             .sub(&Vector::create(0.0, 0.0, fl.into()));
 
@@ -62,7 +64,7 @@ impl Camera {
             origin: orig,
             horizontal: horz,
             vertical: vert,
-            lower_left_corner: llc
+            lower_left_corner: llc,
         }
     }
 }

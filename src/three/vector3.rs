@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub struct Vector {
     pub x: f64,
     pub y: f64,
@@ -6,54 +7,60 @@ pub struct Vector {
 
 impl Vector {
     pub fn new() -> Vector {
-        Vector{ x: 0.0, y: 0.0, z: 0.0 }
+        Vector {
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+        }
     }
 
     pub fn create(x: f64, y: f64, z: f64) -> Vector {
-        Vector{ x, y, z }
+        Vector { x, y, z }
     }
 
     pub fn copy(&self) -> Vector {
-        Vector{
+        Vector {
             x: self.x,
             y: self.y,
-            z: self.z
+            z: self.z,
         }
     }
 
     pub fn sum(&self, other: &Vector) -> Vector {
-        Vector{
+        Vector {
             x: self.x + other.x,
             y: self.y + other.y,
-            z: self.z + other.z
+            z: self.z + other.z,
         }
     }
 
     pub fn sub(&self, other: &Vector) -> Vector {
-        Vector{
+        Vector {
             x: self.x - other.x,
             y: self.y - other.y,
-            z: self.z - other.z
+            z: self.z - other.z,
         }
     }
 
     pub fn product(&self, other: &Vector) -> Vector {
-        Vector{
+        Vector {
             x: self.x * other.x,
             y: self.y * other.y,
-            z: self.z * other.z
+            z: self.z * other.z,
         }
     }
 
     pub fn scale(&self, factor: f64) -> Vector {
-        Vector{
+        Vector {
             x: self.x * factor,
             y: self.y * factor,
-            z: self.z * factor
+            z: self.z * factor,
         }
     }
 
     pub fn len_sq(&self) -> f64 {
+        // Since x_1, y_1, and z_1 are zero relative
+        // to the current vector
         self.x.powi(2) + self.y.powi(2) + self.z.powi(2)
     }
 
@@ -70,7 +77,6 @@ impl Vector {
         let prod = self.product(other);
         prod.x + prod.y + prod.z
     }
-
 }
 
 #[cfg(test)]
